@@ -1,0 +1,7 @@
+<launch>
+    <!-- Set the parameter for the node -->
+    <param name="enable_statistics" value="true" />
+
+    <!-- Launch the node -->
+    <node name="node_exporter" pkg="node_exporter" type="node_exporter.py" output="screen"/>
+</launch>
