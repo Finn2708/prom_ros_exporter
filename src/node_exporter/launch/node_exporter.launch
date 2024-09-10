@@ -1,7 +1,9 @@
 <launch>
-    <!-- Set the parameter for the node -->
-    <param name="enable_statistics" value="true" />
+    <arg name="enable_chatter" default="true" />
 
-    <!-- Launch the node -->
+    <param name="enable_statistics" value="true" />
     <node name="node_exporter" pkg="node_exporter" type="node_exporter.py" output="screen"/>
+    <group if="$(arg enable_chatter)">
+        <include file="$(find roscpp_tutorials)/launch/talker_listener.launch"/>
+    </group>
 </launch>

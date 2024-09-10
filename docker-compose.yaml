@@ -10,10 +10,10 @@ services:
       - 9090:9090
     restart: unless-stopped
     volumes:
-      - ./prometheus:/etc/prometheus
+      - ./data/prometheus:/etc/prometheus
       - prom_data:/prometheus
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      - "host.docker.internal:host-gateway"
 
   grafana:
     image: grafana/grafana
@@ -25,11 +25,19 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=grafana
     volumes:
-      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
-      - ./grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
+      - ./data/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./data/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./data/grafana/dashboard.json:/var/lib/grafana/dashboards/dashboard.json
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  ros_exporter:
+    build: .
+    container_name: ros_exporter
+    # volumes:
+    #   - ./src:/workspace/src
+    network_mode: host
+    command: roslaunch node_exporter node_exporter.launch
 
 volumes:
   prom_data:
